@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+  h1.
+    #{homeTeam} vs. #{awayTeam}
+  p Welcome to scorecard
+
+  table
+        each batter, i in list
+            tr
+                td= batter.name
+                td= batter.score

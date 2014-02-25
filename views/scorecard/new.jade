@@ -1,0 +1,9 @@
+extends ../layout
+
+block content
+  h1= title
+  
+  form(name="create-new-scorecard", action="/scorecard/new", method="post")
+      input(type="text", placeholder="Home team", name="homeTeam")
+      input(type="text", placeholder="Away team", name="awayTeam")
+      input(type="submit", value="Create scorecard")
