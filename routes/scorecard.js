@@ -9,8 +9,17 @@ exports.load = function(req, res){
   } 
   // Load from RESTful URL
   else {
-  	var collection = [{name:"james", score: 65}, {name: "jess", score: 20}, {name: "frankie", score: 0}];
+  	// Mock result (without database)
+    var innings = [
+      {name:"James", score: 65, balls: 97, fours: 8}, 
+      {name: "Jess", score: 20, howOut: "LBW", balls: 19, fours: 2, sixes: 1}, 
+      {name: "Frankie", score: 30, balls: 48}
+    ];
     
-  	res.render('scorecard/view', { homeTeam: req.param('home'), awayTeam: req.param('away'), list: collection });
+  	res.render('scorecard/view', { 
+        homeTeam: req.param('home'), 
+        awayTeam: req.param('away'), 
+        innings: innings 
+    });
   }
 };
