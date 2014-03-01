@@ -3,10 +3,46 @@ extends ../layout
 block content
   h1.
     #{homeTeam} vs. #{awayTeam}
-  p Welcome to scorecard
+  p 1st Test Match played at: Ageas Bowl
 
-  table
-        each batter, i in list
+  table.batting-table(width="70%")
+        thead
             tr
-                td= batter.name
-                td= batter.score
+                th(colspan="2").
+                    #{homeTeam} 1st innings
+                th="R"
+                th="M"
+                th="B"
+                th="4s"
+                th="6s"
+                th="SR"
+        tbody
+            each batter, i in innings
+                tr
+                    td= batter.name
+                    td 
+                        if batter.howOut
+                            =batter.howOut 
+                        else 
+                            ="not out"
+                    td.bold= batter.score
+                    td= ""
+                    td= batter.balls
+                    td= batter.fours
+                    td= batter.sixes
+                    td= Math.round(batter.score / batter.balls * 100).toFixed(2)
+        tfoot
+            tr.extras
+                td="Extras"
+                td="(w 3)"
+                td.bold="3"
+                td= ""
+                td= ""
+                td= ""
+                td= ""
+                td= ""
+            tr.totals
+                td.bold="Total"
+                td="(1 wicket; 26 overs)"
+                td.bold="118"
+                td(colspan="5")="(4.53 runs per over)"     
