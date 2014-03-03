@@ -5,7 +5,14 @@ var scorecard = require('../app/controllers/scorecard');
  */
 
 module.exports = function (app) {
-    app.get('/scorecard/new', scorecard.new);
-    app.post('/scorecard/new', scorecard.load);
-    app.get('/scorecard/:home/:away', scorecard.load);
+    app.get('/scorecard/new', scorecard.createForm);
+    app.post('/scorecard/new', scorecard.create);
+
+    app.get('/scorecard/:scorecardId/edit', scorecard.editForm);
+    app.post('/scorecard/:scorecardId', scorecard.edit);
+
+    app.get('/scorecard/:home/:away', scorecard.show);
+	app.get('/scorecard/:scorecardId', scorecard.show);
+    
+    app.param('scorecardId', scorecard.load);
 }
