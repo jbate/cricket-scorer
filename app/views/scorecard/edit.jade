@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+  h1= title
+  div.edit-box
+      form(name="scorecard-edit", action="/scorecard/#{scorecard._id}", method="post")
+        label(for="homeTeam")="Home team"
+        select(name="homeTeam")
+            each team, i in teams
+                option(value=team._id)= team.shortName
+        br
+            
+        label(for="awayTeam")="Away team"
+        select(name="awayTeam")
+            each team, i in teams
+                option(value=team._id)= team.shortName
+        br
+        input(type="submit", value="Update")

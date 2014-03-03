@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+  h1= title
+  div.create-player
+      form(name="playerEntry", action="/player/new", method="post")
+        input(type="text", placeholder="First name", name="name.first")
+        input(type="text", placeholder="Last name", name="name.last")
+        input(type="text", placeholder="Initials", name="name.initials")
+        select(name="team")
+            each t, i in teams
+                option(value=t._id)= t.shortName
+        br  
+        input(type="submit", value="Create")
