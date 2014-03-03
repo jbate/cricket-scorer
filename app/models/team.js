@@ -30,6 +30,24 @@ teamSchema.statics = {
   load: function (name, cb) {
     this.findOne({ shortName : name })
       .exec(cb)
+  },
+
+  /**
+   * List articles
+   *
+   * @param {Object} options
+   * @param {Function} cb
+   * @api private
+   */
+
+  list: function (options, cb) {
+    var criteria = options.criteria || {};
+
+    this.find(criteria)
+      .sort('name') // sort by name
+      .limit(options.perPage)
+      .skip(options.perPage * options.page)
+      .exec(cb)
   }
 }
 //compile schema to model
