@@ -19,14 +19,14 @@ block content
         tbody
             each batter, i in innings
                 tr
-                    td= batter.name
+                    td= batter.player.name.initials + " " + batter.player.name.last
                     td 
                         if batter.howOut
                             =batter.howOut 
                         else 
                             ="not out"
                     td.bold= batter.score
-                    td= ""
+                    td= batter.mins
                     td= batter.balls
                     td= batter.fours
                     td= batter.sixes
