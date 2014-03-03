@@ -1,22 +1,10 @@
 var mongoose = require('mongoose');
 
-//create schema for blog post
+//create schema for team
 var teamSchema = new mongoose.Schema({
   name:  { type: String, unique: true },
   shortName: String,
   ground:   String
-  /*,
-  comments: [{ body: String, date: Date }],
-  date: { type: Date, default: Date.now },
-  hidden: Boolean,
-  meta: {
-    votes: Number,
-    favs:  Number
-  }*/
-});
-
-teamSchema.virtual('name.full').get(function () {
-    return this.name.first + ' ' + this.name.last;
 });
 
 teamSchema.path('name').required(true, 'Name cannot be blank');
@@ -40,7 +28,6 @@ teamSchema.statics = {
    */
 
   load: function (name, cb) {
-    console.log("Loading " + name)
     this.findOne({ shortName : name })
       .exec(cb)
   }
