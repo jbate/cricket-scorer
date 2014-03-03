@@ -2,14 +2,19 @@ extends ../layout
 
 block content
   h1.
-    #{homeTeam.name} vs. #{awayTeam.name}
-  p 1st Test Match played at: #{homeTeam.ground}
+    #{scorecard.homeTeam.name} vs. #{scorecard.awayTeam.name}
+  p Played at: 
+    em.
+        #{scorecard.homeTeam.ground}
+  p On: 
+    em.
+        #{moment(scorecard.createdDate).format("dddd, MMMM Do YYYY, H:mm:ss")} 
 
   table.batting-table(width="70%")
         thead
             tr
                 th(colspan="2").
-                    #{homeTeam.name} 1st innings
+                    #{scorecard.homeTeam.name} 1st innings
                 th="R"
                 th="M"
                 th="B"
@@ -17,7 +22,7 @@ block content
                 th="6s"
                 th="SR"
         tbody
-            each batter, i in innings
+            each batter, i in scorecard.innings
                 tr
                     td= batter.player.name.initials + " " + batter.player.name.last
                     td 
