@@ -7,7 +7,7 @@ var playerSchema = new mongoose.Schema({
     last: String,
     initials: String
   },
-  team: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Team' }]
+  team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' }
 });
 
 playerSchema.virtual('name.full').get(function () {
