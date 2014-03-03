@@ -1,5 +1,7 @@
 var mongoose = require('mongoose')
 var Team = mongoose.model("Team");
+var Player = mongoose.model("Player");
+var Scorecard = mongoose.model("Scorecard");
 
 exports.new = function(req, res){
   res.render('scorecard/new', { title: 'Create new scorecard' });
@@ -12,28 +14,15 @@ exports.load = function(req, res){
   } 
   // Load from RESTful URL
   else {
-  	// Mock result (without database)
-    var innings = [
-      {name:"James", score: 65, balls: 97, fours: 8}, 
-      {name: "Jess", score: 20, howOut: "LBW", balls: 19, fours: 2, sixes: 1}, 
-      {name: "Frankie", score: 30, balls: 48}
-    ];
-    
-    // Load home team
-    Team.load(req.param('home'), function(err, result){
-        var homeTeam = result;
-        
-        // Load away team
-        Team.load(req.param('away'), function(err, result){
-          var awayTeam = result;
-
+  	
+    Scorecard.loadById('53139d67f258ec1ee40aa9fb', function(err, result){
           res.render('scorecard/view', { 
-              title: homeTeam.shortName + " vs. " + awayTeam.shortName,
-              homeTeam: homeTeam, 
-              awayTeam: awayTeam, 
-              innings: innings 
+              title: result.homeTeam.shortName + " vs. " + result.awayTeam.shortName,
+              homeTeam: result.homeTeam, 
+              awayTeam: result.awayTeam, 
+              innings: result.innings 
           });
-      });
-    }); 
+    });
+
   }
 };
