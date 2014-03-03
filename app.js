@@ -9,6 +9,8 @@ var fs = require('fs');
 var mongoose = require('mongoose');
 
 var app = express();
+app.locals.moment = require('moment');
+
 // express settings
 require('./config/express')(app);
 
@@ -42,6 +44,7 @@ fs.readdirSync(models_path).forEach(function (file) {
 require('./routes/teams')(app);
 require('./routes/scorecard')(app);
 require('./routes/admin')(app);
+require('./routes/player')(app);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
