@@ -5,6 +5,6 @@ var teams = require('../app/controllers/teams');
  */
 
 module.exports = function (app) {
-    app.param('name', teams.load)
+    app.param('name', teams.load);
     app.get('/teams/:name', teams.getTeam);
 }
