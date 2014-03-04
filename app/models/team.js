@@ -33,7 +33,7 @@ teamSchema.statics = {
   },
 
   /**
-   * List articles
+   * List teams
    *
    * @param {Object} options
    * @param {Function} cb
