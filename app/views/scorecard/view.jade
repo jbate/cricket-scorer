@@ -22,20 +22,21 @@ block content
                 th="6s"
                 th="SR"
         tbody
-            each batter, i in scorecard.innings
-                tr
-                    td= batter.player.name.initials + " " + batter.player.name.last
-                    td 
-                        if batter.howOut
-                            =batter.howOut 
-                        else 
-                            ="not out"
-                    td.bold= batter.score
-                    td= batter.mins
-                    td= batter.balls
-                    td= batter.fours
-                    td= batter.sixes
-                    td= Math.round(batter.score / batter.balls * 100).toFixed(2)
+            if scorecard.innings.length > 0
+                each batter, i in scorecard.innings
+                    tr
+                        td= batter.player.name.initials + " " + batter.player.name.last
+                        td 
+                            if batter.howOut
+                                =batter.howOut 
+                            else 
+                                ="not out"
+                        td.bold= batter.score
+                        td= batter.mins
+                        td= batter.balls
+                        td= batter.fours
+                        td= batter.sixes
+                        td= Math.round(batter.score / batter.balls * 100).toFixed(2)
         tfoot
             tr.extras
                 td="Extras"
