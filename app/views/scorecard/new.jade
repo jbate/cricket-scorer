@@ -4,6 +4,15 @@ block content
   h1= title
   
   form(name="create-new-scorecard", action="/scorecard/new", method="post")
-      input(type="text", placeholder="Home team", name="homeTeam")
-      input(type="text", placeholder="Away team", name="awayTeam")
+      label(for="homeTeam")="Home team: "
+      select(name="homeTeam")
+            each team, i in teams
+                option(value=team._id) #{team.shortName}
+      br
+
+      label(for="awayTeam")="Away team: "
+      select(name="awayTeam")
+            each team, i in teams
+                option(value=team._id) #{team.shortName}
+      br
       input(type="submit", value="Create scorecard")
