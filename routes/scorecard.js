@@ -11,8 +11,7 @@ module.exports = function (app) {
     app.get('/scorecard/:scorecardId/edit', scorecard.editForm);
     app.post('/scorecard/:scorecardId', scorecard.edit);
 
-    app.get('/scorecard/:home/:away', scorecard.show);
-	app.get('/scorecard/:scorecardId', scorecard.show);
+    app.get('/scorecard/:scorecardId', scorecard.show);
     
     app.param('scorecardId', scorecard.load);
 }
