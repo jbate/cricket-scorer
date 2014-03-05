@@ -7,12 +7,74 @@ block content
         label(for="homeTeam")="Home team"
         select(name="homeTeam")
             each team, i in teams
-                option(value=team._id)= team.shortName
+                option(selected=scorecard.homeTeam._id.toString() == team._id, value=team._id)= team.shortName
         br
-            
+
         label(for="awayTeam")="Away team"
         select(name="awayTeam")
             each team, i in teams
-                option(value=team._id)= team.shortName
+                option(selected=scorecard.awayTeam._id.toString() == team._id, value=team._id) #{team.shortName}
+        br
+        table.batting-table(width="70%")
+            thead    
+                tr
+                    th(colspan="2").
+                        #{scorecard.homeTeam.name} 1st innings
+                    th="R"
+                    th="M"
+                    th="B"
+                    th="4s"
+                    th="6s"
+                    th="SR"
+            tbody
+                each batter, i in scorecard.innings
+                    tr
+                        td
+                            select(name="innings[" + i + "][player]")
+                                if batter.player
+                                    each player, j in players
+                                        option(selected=batter.player._id.toString() == player._id, value=player._id)= player.name.initials + " " + player.name.last
+                        td 
+                            select(name="innings[" + i + "][howOut]")
+                                option(selected=batter.howOut == "not out", value="not out")= "not out"
+                                option(selected=batter.howOut == "caught", value="caught")= "caught"
+                                option(selected=batter.howOut == "bowled", value="bowled")= "bowled"
+                                option(selected=batter.howOut == "LBW", value="LBW")= "LBW"
+                        td.bold
+                            input(name="innings[" + i + "][score]", size="1", type="text", value=batter.score)
+                        td
+                            input(name="innings[" + i + "][mins]", size="1", type="text", value=batter.mins)
+                        td
+                            input(name="innings[" + i + "][balls]", size="1", type="text", value=batter.balls)
+                        td
+                            input(name="innings[" + i + "][fours]", size="1", type="text", value=batter.fours)
+                        td
+                            input(name="innings[" + i + "][sixes]", size="1", type="text", value=batter.sixes)
+                        td= Math.round(batter.score / batter.balls * 100).toFixed(2)
+                
+                - nextIndex = scorecard.innings.length
+                tr
+                    td
+                        select(name="innings[" + nextIndex + "][player]")
+                            option(value="")="Please select"
+                            each player, j in players
+                                option(value=player._id)= player.name.initials + " " + player.name.last
+                    td 
+                        select(name="innings[" + nextIndex + "][howOut]")
+                            option(value="not out")= "not out"
+                            option(value="caught")= "caught"
+                            option(value="bowled")= "bowled"
+                            option(value="LBW")= "LBW"
+                    td.bold
+                        input(name="innings[" + nextIndex + "][score]", size="1", type="text")
+                    td
+                        input(name="innings[" + nextIndex + "][mins]", size="1", type="text")
+                    td
+                        input(name="innings[" + nextIndex + "][balls]", size="1", type="text")
+                    td
+                        input(name="innings[" + nextIndex + "][fours]", size="1", type="text")
+                    td
+                        input(name="innings[" + nextIndex + "][sixes]", size="1", type="text")
+                    td= ""
         br
         input(type="submit", value="Update")
