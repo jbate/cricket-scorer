@@ -46,6 +46,24 @@ playerSchema.statics = {
   loadByLastName: function (lastName, cb) {
     this.findOne({ 'name.last' : lastName })
       .exec(cb)
+  },
+
+  /**
+   * List players
+   *
+   * @param {Object} options
+   * @param {Function} cb
+   * @api private
+   */
+
+  list: function (options, cb) {
+    var criteria = options.criteria || {};
+
+    this.find(criteria)
+      .sort('name.last') // sort by name
+      .limit(options.perPage)
+      .skip(options.perPage * options.page)
+      .exec(cb)
   }
 }
 //compile schema to model
