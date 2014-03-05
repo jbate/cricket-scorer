@@ -13,98 +13,69 @@ exports.load = function(req, res, next, id){
 };
 
 exports.createForm = function(req, res){
-  res.render('scorecard/new', { title: 'Create new scorecard' });
+  var teamQuery = {
+              perPage: 10,
+              page: 0
+          }
+        
+    Team.list(teamQuery, function(err, teams){
+        res.render('scorecard/new', { title: 'Create new scorecard', teams: teams });
+    });
 };
 
 exports.create = function(req, res){
     //save to db
     if(typeof req.param('homeTeam') != 'undefined' && typeof req.param('awayTeam') != 'undefined'){
-       res.redirect('/scorecard/' + req.param('homeTeam') + '/' + req.param('awayTeam'));
+       var scorecard = new Scorecard(req.body);
+       scorecard.save(function(err, result){
+          console.log(result);
+          res.redirect('/scorecard/' + req.param('homeTeam') + '/' + req.param('awayTeam'));
+       });
     } 
 };
 
+// Show the edit form
 exports.editForm = function(req, res){
     if(req.scorecard){
-        var options = {
-            perPage: 10,
-            page: 0
-        }
-        Team.list(options, function(err, result){
-            return res.render('scorecard/edit', { title: 'Edit scorecard', scorecard: req.scorecard, teams: result });
+          var teamQuery = {
+              perPage: 10,
+              page: 0
+          }
+        
+        Team.list(teamQuery, function(err, teams){
+            var playerQuery = {
+                perPage: 10,
+                page: 0,
+                criteria: { team: req.scorecard.homeTeam._id }
+            }
+            Player.list(playerQuery, function(err, players){
+                return res.render('scorecard/edit', { title: 'Edit scorecard', scorecard: req.scorecard, teams: teams, players: players });
+            });
         });
     }
 };
 
+// Edit the scorecard
 exports.edit = function(req, res){
     if(req.scorecard){
+        console.log(req.body);
+        for(var i = 0; i < req.body.innings.length; i++){
+            if(req.body.innings[i].player == ""){
+                return res.redirect('/scorecard/' + req.scorecard._id + "/edit");
+            }
+        }
         Scorecard.findByIdAndUpdate(req.scorecard._id, req.body, function(err, result){
-            console.log(result);
-            return res.redirect('/scorecard/' + req.scorecard._id);
+            return res.redirect('/scorecard/' + req.scorecard._id + "/edit");
         });
     }
 };
 
+// Show the scorecard
 exports.show = function(req, res){
-  	// Mock result (without database)
-    /*var innings = [
-      {player: "Bate", order: 1, score: 65, balls: 97, fours: 8}, 
-      {player: "Carberry", order: 2, score: 20, howOut: "LBW", balls: 19, fours: 2, sixes: 1}, 
-      {player: "Adams", order: 3, score: 30, balls: 48}
-    ];
-    
-    for(var i = 0; i < innings.length; i++){
-        (function(i) {
-          Player.loadByLastName(innings[i].player, function(err, result){
-                  console.log(innings[i].player);
-                  console.log(result._id);
-                  innings[i].player = result._id;
-                  if(i == (innings.length - 1)){
-                    addToScorecard();
-                  }
-              });
-        })(i);
-        
-      }// end loop
-
-        function addToScorecard(){
-          
-    //create new model
-    var scorecard = new Scorecard({innings: innings});
-    
-    // Load home team
-    Team.load(req.param('home'), function(err, result){
-        var homeTeam = result;
-
-        // Load away team
-        Team.load(req.param('away'), function(err, result){
-          var awayTeam = result;
-          scorecard.homeTeam = homeTeam._id;
-          scorecard.awayTeam = awayTeam._id;
-          //scorecard.save(function (err) {
-              if (err) {
-                return err;
-              }
-              else {
-                console.log("Scorecard saved");
-              }
-          });//
-          console.log(scorecard);
-
-          res.render('scorecard/view', { 
-              title: homeTeam.shortName + " vs. " + awayTeam.shortName,
-              homeTeam: homeTeam, 
-              awayTeam: awayTeam, 
-              innings: innings 
-          });
-      });
-    }); 
-  } //end fn 
- */
-    //var teamIds = ['5311f6b281afaeb7ad3287da','5311f6b281afaeb7ad3287db'];
-    Scorecard.loadById('53139d67f258ec1ee40aa9fb', function(err, result){
+  	Scorecard.loadById(req.scorecard._id, function(err, result){
           res.render('scorecard/view', { 
               title: result.homeTeam.shortName + " vs. " + result.awayTeam.shortName,
-              scorecard: result 
+              scorecard: result  
           });
     });
 };
