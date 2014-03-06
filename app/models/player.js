@@ -7,6 +7,9 @@ var playerSchema = new mongoose.Schema({
     last: String,
     initials: String
   },
+  bat: { type: String, default: "" },
+  bowl: { type: String, default: "" },
+  bowlStyle: { type: String, default: "" },
   team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' }
 });
 
