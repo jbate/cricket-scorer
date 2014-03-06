@@ -20,12 +20,13 @@ block content
                 th="B"
                 th="4s"
                 th="6s"
-                th="SR"
+                th="S/R"
         tbody
             if scorecard.innings.length > 0
                 each batter, i in scorecard.innings
                     tr
-                        td= batter.player.name.initials + " " + batter.player.name.last
+                        td
+                            a(href="/player/" + batter.player._id)=batter.player.name.initials + " " + batter.player.name.last
                         td 
                             if batter.howOut
                                 =batter.howOut 
@@ -36,7 +37,9 @@ block content
                         td= batter.balls
                         td= batter.fours
                         td= batter.sixes
-                        td= Math.round(batter.score / batter.balls * 100).toFixed(2)
+                        td
+                            if batter.score && batter.balls
+                                = Math.round(batter.score / batter.balls * 100).toFixed(2)
         tfoot
             tr.extras
                 td="Extras"
