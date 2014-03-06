@@ -8,12 +8,12 @@ block content
         select(name="homeTeam")
             each team, i in teams
                 option(selected=scorecard.homeTeam._id.toString() == team._id, value=team._id)= team.shortName
-        br
-
+        
         label(for="awayTeam")="Away team"
         select(name="awayTeam")
             each team, i in teams
                 option(selected=scorecard.awayTeam._id.toString() == team._id, value=team._id) #{team.shortName}
+        br
         br
         table.batting-table(width="70%")
             thead    
@@ -25,32 +25,35 @@ block content
                     th="B"
                     th="4s"
                     th="6s"
-                    th="SR"
+                    th="S/R"
             tbody
                 each batter, i in scorecard.innings
-                    tr
-                        td
-                            select(name="innings[" + i + "][player]")
-                                if batter.player
-                                    each player, j in players
-                                        option(selected=batter.player._id.toString() == player._id, value=player._id)= player.name.initials + " " + player.name.last
-                        td 
-                            select(name="innings[" + i + "][howOut]")
-                                option(selected=batter.howOut == "not out", value="not out")= "not out"
-                                option(selected=batter.howOut == "caught", value="caught")= "caught"
-                                option(selected=batter.howOut == "bowled", value="bowled")= "bowled"
-                                option(selected=batter.howOut == "LBW", value="LBW")= "LBW"
-                        td.bold
-                            input(name="innings[" + i + "][score]", size="1", type="text", value=batter.score)
-                        td
-                            input(name="innings[" + i + "][mins]", size="1", type="text", value=batter.mins)
-                        td
-                            input(name="innings[" + i + "][balls]", size="1", type="text", value=batter.balls)
-                        td
-                            input(name="innings[" + i + "][fours]", size="1", type="text", value=batter.fours)
-                        td
-                            input(name="innings[" + i + "][sixes]", size="1", type="text", value=batter.sixes)
-                        td= Math.round(batter.score / batter.balls * 100).toFixed(2)
+                    if batter               
+                        tr
+                            td
+                                select(name="innings[" + i + "][player]")
+                                    if batter.player
+                                        each player, j in players
+                                            option(selected=batter.player._id.toString() == player._id, value=player._id)= player.name.initials + " " + player.name.last
+                            td 
+                                select(name="innings[" + i + "][howOut]")
+                                    option(selected=batter.howOut == "not out", value="not out")= "not out"
+                                    option(selected=batter.howOut == "caught", value="caught")= "caught"
+                                    option(selected=batter.howOut == "bowled", value="bowled")= "bowled"
+                                    option(selected=batter.howOut == "LBW", value="LBW")= "LBW"
+                            td.bold
+                                input(name="innings[" + i + "][score]", size="1", type="text", value=batter.score)
+                            td
+                                input(name="innings[" + i + "][mins]", size="1", type="text", value=batter.mins)
+                            td
+                                input(name="innings[" + i + "][balls]", size="1", type="text", value=batter.balls)
+                            td
+                                input(name="innings[" + i + "][fours]", size="1", type="text", value=batter.fours)
+                            td
+                                input(name="innings[" + i + "][sixes]", size="1", type="text", value=batter.sixes)
+                            td
+                                if batter.score && batter.balls
+                                    = Math.round(batter.score / batter.balls * 100).toFixed(2)
                 
                 - nextIndex = scorecard.innings.length
                 tr
@@ -76,5 +79,34 @@ block content
                     td
                         input(name="innings[" + nextIndex + "][sixes]", size="1", type="text")
                     td= ""
+            tfoot
+                tr
+                    td.bold= "Extras"
+                    td= ""
+                    td.bold= "w"
+                    td.bold= "nb"
+                    td.bold= "b"
+                    td.bold= "lb"
+                    td.bold= "p"
+                    td= ""
+                tr.extras
+                    td= ""
+                    td= "(w 3)"
+                    td
+                        input(name="extras[wides]", size="1", type="text")
+                    td
+                        input(name="extras[noBalls]", size="1", type="text")
+                    td
+                        input(name="extras[byes]", size="1", type="text")
+                    td
+                        input(name="extras[legByes]", size="1", type="text")
+                    td
+                        input(name="extras[pens]", size="1", type="text")
+                    td= ""
+                tr.totals
+                    td.bold= "Total"
+                    td= "(1 wicket; 26 overs)"
+                    td.bold= "118"
+                    td(colspan="5")= "(4.53 runs per over)"     
         br
         input(type="submit", value="Update")
