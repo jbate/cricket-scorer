@@ -1,0 +1,38 @@
+extends ../layout
+
+block content
+  h1= title
+  
+  form(name="create-new-fixture", action="/fixture/new", method="post")
+      label(for="matchType")="Match type: "
+      select(name="matchType")
+            option(value='firstClass')= "First class"
+            option(value='oneDay')= "One day"
+            option(value='t20')= "t20"
+      br
+
+      label(for="homeTeam")="Home team: "
+      select(name="homeTeam")
+            each team, i in teams
+                option(value=team._id) #{team.shortName}
+      br
+
+      label(for="awayTeam")="Away team: "
+      select(name="awayTeam")
+            each team, i in teams
+                option(value=team._id) #{team.shortName}
+      br
+
+      label(for="tossWinner")="Toss winner: "
+      select(name="tossWinner")
+            each team, i in teams
+                option(value=team._id) #{team.shortName}
+      br
+
+      label(for="tossDecision")="Toss decision: "
+      select(name="tossDecision")
+            option(value='bat')= "Bat"
+            option(value='bowl')= "Bowl"
+      br
+
+      input(type="submit", value="Create fixture")

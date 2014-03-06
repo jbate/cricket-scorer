@@ -1,0 +1,63 @@
+extends ../layout
+
+block content
+  h1.
+    #{fixture.homeTeam.name} vs. #{fixture.awayTeam.name}
+  p Played at: 
+    em.
+        #{fixture.homeTeam.ground}
+  p Type of match: 
+    em.
+        #{fixture.matchType}
+  p On: 
+    em.
+        #{moment(fixture.createdDate).format("dddd, MMMM Do YYYY, H:mm:ss")} 
+
+  each scorecard, k in fixture.scorecards
+      if scorecard
+          table.batting-table(width="70%")
+                thead
+                    tr
+                        th(colspan="2").
+                            #{scorecard.battingTeam.name} 1st innings
+                        th="R"
+                        th="M"
+                        th="B"
+                        th="4s"
+                        th="6s"
+                        th="S/R"
+                tbody
+                    if scorecard.innings.length > 0
+                        each batter, i in scorecard.innings
+                            tr
+                                td
+                                    if batter.player.name
+                                        a(href="/player/" + batter.player._id)=batter.player.name.initials + " " + batter.player.name.last
+                                td 
+                                    if batter.howOut
+                                        =batter.howOut 
+                                    else 
+                                        ="not out"
+                                td.bold= batter.score
+                                td= batter.mins
+                                td= batter.balls
+                                td= batter.fours
+                                td= batter.sixes
+                                td
+                                    if batter.score && batter.balls
+                                        = Math.round(batter.score / batter.balls * 100).toFixed(2)
+                tfoot
+                    tr.extras
+                        td= "Extras"
+                        td= scorecard.extrasString
+                        td.bold= scorecard.extrasTotal
+                        td= ""
+                        td= ""
+                        td= ""
+                        td= ""
+                        td= ""
+                    tr.totals
+                        td.bold="Total"
+                        td="(1 wicket; 26 overs)"
+                        td.bold="118"
+                        td(colspan="5")="(4.53 runs per over)"     

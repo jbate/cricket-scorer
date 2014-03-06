@@ -1,0 +1,146 @@
+extends ../layout
+
+block content
+  h1= title
+  div.edit-box
+      form(name="fixture-edit", action="/fixture/#{fixture._id}", method="post")
+          label(for="fixture.matchType")="Match type: "
+          select(name="fixture.matchType")
+                option(selected=fixture.matchType == 'firstClass', value='firstClass')= "First class"
+                option(selected=fixture.matchType == 'oneDay', value='oneDay')= "One day"
+                option(selected=fixture.matchType == 't20', value='t20')= "t20"
+          br
+
+          label(for="fixture[homeTeam]")="Home team: "
+          select(name="fixture[homeTeam]")
+                each team, i in teams
+                    option(selected=fixture.homeTeam._id.toString() == team._id, value=team._id) #{team.shortName}
+          br
+
+          label(for="fixture[awayTeam]")="Away team: "
+          select(name="fixture[awayTeam]")
+                each team, i in teams
+                    option(selected=fixture.awayTeam._id.toString() == team._id, value=team._id) #{team.shortName}
+          br
+
+          label(for="fixture[tossWinner]")="Toss winner: "
+          select(name="fixture[tossWinner]")
+                each team, i in teams
+                    option(selected=fixture.tossWinner._id.toString() == team._id, value=team._id) #{team.shortName}
+          br
+
+          label(for="fixture[tossDecision]")="Toss decision: "
+          select(name="fixture[tossDecision]")
+                option(selected=fixture.tossDecision == "bat", value='bat')= "Bat"
+                option(selected=fixture.tossDecision == "bowl", value='bowl')= "Bowl"
+          br
+          each scorecard, k in fixture.scorecards
+            = "Batting team: "
+            = scorecard.battingTeam.name
+            br
+            = "Bowling team: "
+            = scorecard.bowlingTeam.name
+            br
+            br
+            
+            table.batting-table(width="70%")
+                thead    
+                    tr
+                        th(colspan="2").
+                            #{scorecard.battingTeam.name} 1st innings
+                        th="R"
+                        th="M"
+                        th="B"
+                        th="4s"
+                        th="6s"
+                        th="S/R"
+                tbody
+                    each batter, i in scorecard.innings
+                        if batter               
+                            tr
+                                td
+                                    select(name="scorecard[innings][" + i + "][player]")
+                                        if batter.player
+                                            each player, j in players
+                                                option(selected=batter.player.toString() == player._id, value=player._id)= player.name.initials + " " + player.name.last
+                                td 
+                                    select(name="scorecard[innings][" + i + "][howOut]")
+                                        option(selected=batter.howOut == "not out", value="not out")= "not out"
+                                        option(selected=batter.howOut == "caught", value="caught")= "caught"
+                                        option(selected=batter.howOut == "bowled", value="bowled")= "bowled"
+                                        option(selected=batter.howOut == "LBW", value="LBW")= "LBW"
+                                td.bold
+                                    input(name="scorecard[innings][" + i + "][score]", size="1", type="text", value=batter.score)
+                                td
+                                    input(name="scorecard[innings][" + i + "][mins]", size="1", type="text", value=batter.mins)
+                                td
+                                    input(name="scorecard[innings][" + i + "][balls]", size="1", type="text", value=batter.balls)
+                                td
+                                    input(name="scorecard[innings][" + i + "][fours]", size="1", type="text", value=batter.fours)
+                                td
+                                    input(name="scorecard[innings][" + i + "][sixes]", size="1", type="text", value=batter.sixes)
+                                td
+                                    if batter.score && batter.balls
+                                        = Math.round(batter.score / batter.balls * 100).toFixed(2)
+                    
+                    - nextIndex = scorecard.innings.length
+                    tr
+                        td
+                            select(name="scorecard[innings][" + nextIndex + "][player]")
+                                option(value="")="Please select"
+                                each player, j in players
+                                    option(value=player._id)= player.name.initials + " " + player.name.last
+                        td 
+                            select(name="scorecard[innings][" + nextIndex + "][howOut]")
+                                option(value="not out")= "not out"
+                                option(value="caught")= "caught"
+                                option(value="bowled")= "bowled"
+                                option(value="LBW")= "LBW"
+                        td.bold
+                            input(name="scorecard[innings][" + nextIndex + "][score]", size="1", type="text")
+                        td
+                            input(name="scorecard[innings][" + nextIndex + "][mins]", size="1", type="text")
+                        td
+                            input(name="scorecard[innings][" + nextIndex + "][balls]", size="1", type="text")
+                        td
+                            input(name="scorecard[innings][" + nextIndex + "][fours]", size="1", type="text")
+                        td
+                            input(name="scorecard[innings][" + nextIndex + "][sixes]", size="1", type="text")
+                        td= ""
+                tfoot
+                    tr
+                        td.bold= "Extras"
+                        td= ""
+                        td.bold= "w"
+                        td.bold= "nb"
+                        td.bold= "b"
+                        td.bold= "lb"
+                        td.bold= "p"
+                        td= ""
+                    tr.extras
+                        td(colspan="2")= ""
+                        td
+                            input(name="scorecard[extras][wides]", size="1", type="text", value=scorecard.extras.wides)
+                        td
+                            input(name="scorecard[extras][noBalls]", size="1", type="text", value=scorecard.extras.noBalls)
+                        td
+                            input(name="scorecard[extras][byes]", size="1", type="text", value=scorecard.extras.byes)
+                        td
+                            input(name="scorecard[extras][legByes]", size="1", type="text", value=scorecard.extras.legByes)
+                        td
+                            input(name="scorecard[extras][pens]", size="1", type="text", value=scorecard.extras.pens)
+                        td= ""
+                    tr.overs
+                        td.bold= "Overs"
+                        td= ""
+                        td
+                            input(name="scorecard[overs]", size="3", type="text", value=scorecard.overs)
+                        td(colspan="5")= ""
+                    tr.totals
+                        td.bold= "Total"
+                        td= ""
+                        td.bold= scorecard.total
+                        td(colspan="5")= scorecard.runRate
+          
+          br  
+          input(type="submit", value="Update fixture")
