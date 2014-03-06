@@ -3,6 +3,28 @@ var Player = mongoose.model("Player");
 var Team = mongoose.model("Team");
 
 /**
+ * Load
+ */
+
+exports.load = function(req, res, next, playerId){
+  Player.loadById(playerId, function (err, player) {
+    if (err) return next(err)
+    if (!player) return next(new Error('Player not found'))
+    req.player = player;
+    next();
+  });
+};
+
+// Show the player
+exports.show = function(req, res){
+    res.render('player/view', { 
+          title: req.player.name.full,
+          player: req.player
+    });
+};
+
+
+/**
  * Create player
  */
 exports.createForm = function(req, res){
