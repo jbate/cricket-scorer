@@ -29,7 +29,7 @@ exports.create = function(req, res){
        var scorecard = new Scorecard(req.body);
        scorecard.save(function(err, result){
           console.log(result);
-          res.redirect('/scorecard/' + req.param('homeTeam') + '/' + req.param('awayTeam'));
+          res.redirect('/scorecard/' + result._id);
        });
     } 
 };
@@ -58,15 +58,20 @@ exports.editForm = function(req, res){
 // Edit the scorecard
 exports.edit = function(req, res){
     if(req.scorecard){
-        console.log(req.body);
+        // Only save rows of an innings that have a player
+        var innings = [];
         for(var i = 0; i < req.body.innings.length; i++){
-            if(req.body.innings[i].player == ""){
-                return res.redirect('/scorecard/' + req.scorecard._id + "/edit");
+            // If player isn't empty, push to temp array
+            if(req.body.innings[i].player != ""){
+                innings.push(req.body.innings[i]);
             }
         }
-        Scorecard.findByIdAndUpdate(req.scorecard._id, req.body, function(err, result){
+        // Overwrite innings with temp array
+        req.body.innings = innings;
+        console.log(req.body);
+        //Scorecard.findByIdAndUpdate(req.scorecard._id, req.body, function(err, result){
             return res.redirect('/scorecard/' + req.scorecard._id + "/edit");
-        });
+        //});
     }
 };
 
