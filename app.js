@@ -42,6 +42,7 @@ fs.readdirSync(models_path).forEach(function (file) {
 
 // Bootstrap routes
 require('./routes/teams')(app);
+require('./routes/fixture')(app);
 require('./routes/scorecard')(app);
 require('./routes/admin')(app);
 require('./routes/player')(app);
