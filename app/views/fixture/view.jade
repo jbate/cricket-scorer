@@ -58,6 +58,6 @@ block content
                         td= ""
                     tr.totals
                         td.bold="Total"
-                        td="(1 wicket; 26 overs)"
-                        td.bold="118"
-                        td(colspan="5")="(4.53 runs per over)"     
+                        td="(" + scorecard.wicketsLost + " wicket; " + scorecard.overs + " overs)"
+                        td.bold= scorecard.total
+                        td(colspan="5")="(" + scorecard.runRate + " runs per over)"     
