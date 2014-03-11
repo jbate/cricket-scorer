@@ -34,7 +34,7 @@ scorecardSchema.virtual('innings.strikeRate').get(function () {
 });
 
 scorecardSchema.virtual('runRate').get(function () {
-    return parseInt((this.total / this.overs).toFixed(2)) || 0;
+    return parseFloat((this.total / this.overs).toFixed(2)) || 0.00;
 });
 
 scorecardSchema.virtual('extrasTotal').get(function () {
