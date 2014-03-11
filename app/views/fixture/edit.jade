@@ -62,7 +62,7 @@ block content
                                     select(name="scorecard[innings][" + i + "][player]")
                                         if batter.player
                                             each player, j in players
-                                                option(selected=batter.player.toString() == player._id, value=player._id)= player.name.initials + " " + player.name.last
+                                                option(selected=batter.player._id.toString() == player._id, value=player._id)= player.name.initials + " " + player.name.last
                                 td 
                                     select(name="scorecard[innings][" + i + "][howOut]")
                                         option(selected=batter.howOut == "not out", value="not out")= "not out"
