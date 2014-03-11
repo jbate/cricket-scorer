@@ -28,7 +28,20 @@ teamSchema.statics = {
    */
 
   load: function (name, cb) {
-    this.findOne({ shortName : name })
+    this.findOne({ shortName: name })
+      .exec(cb)
+  },
+
+   /**
+   * Find team by id
+   *
+   * @param {ObjectId} id
+   * @param {Function} cb
+   * @api private
+   */
+
+  loadById: function (id, cb) {
+    this.findOne({ _id: id })
       .exec(cb)
   },
 
