@@ -23,6 +23,16 @@ exports.show = function(req, res){
     });
 };
 
+// Show all of the players
+exports.showAll = function(req, res){
+    Player.list({ perPage: 10, page: 0 }, function(err, result){
+        res.render('player/list', { 
+              title: "All players",
+              players: result  
+          });
+    }); 
+};
+
 
 /**
  * Create player

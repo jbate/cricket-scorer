@@ -1,0 +1,20 @@
+extends ../layout
+
+block content
+  h1= title
+
+  if players
+    table
+        tr
+            th= "Name"
+            th= "Team"
+            th= "View"
+            th= "Edit"
+        each player, i in players
+            tr
+                td= player.name.full
+                td= player.team.shortName
+                td
+                    a(href="/player/" + player._id) View
+                td
+                    a(href="/player/" + player._id + "/edit") Edit

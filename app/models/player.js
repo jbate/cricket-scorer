@@ -63,6 +63,7 @@ playerSchema.statics = {
     var criteria = options.criteria || {};
 
     this.find(criteria)
+      .populate("team")
       .sort('name.last') // sort by name
       .limit(options.perPage)
       .skip(options.perPage * options.page)
