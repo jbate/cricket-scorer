@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+  h1= title
+
+  if teams
+    table
+        tr
+            th= "Name"
+            th= "Short name"
+            th= "Ground"
+            th= "View"
+            th= "Edit"
+        each team, i in teams
+            tr
+                td= team.name
+                td= team.shortName
+                td= team.ground
+                td
+                    a(href="/team/" + team._id) View
+                td
+                    a(href="/team/" + team._id + "/edit") Edit

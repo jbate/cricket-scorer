@@ -10,5 +10,7 @@ module.exports = function (app) {
     app.get('/team/new', team.createForm);
     app.post('/team/new', team.create);
 
-    app.get('/team/:name', team.getTeam);
+    app.get('/team/:name', team.show);
+
+    app.get('/teams', team.showAll);
 }

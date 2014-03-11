@@ -18,12 +18,22 @@ exports.load = function(req, res, next, id){
  * Retrieve a team
  */
 
-exports.getTeam = function(req, res) {
+exports.show = function(req, res) {
     if(typeof req.team != 'undefined'){
       res.render('team/view', {team: req.team});
   } else {
     res.render('team/new');
   }
+};
+
+// Show all of the teams
+exports.showAll = function(req, res){
+    Team.list({ perPage: 10, page: 0 }, function(err, result){
+        res.render('team/list', { 
+              title: "All teams",
+              teams: result  
+          });
+    });  
 };
 
 /**
