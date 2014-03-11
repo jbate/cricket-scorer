@@ -88,6 +88,8 @@ exports.edit = function(req, res){
             req.body.scorecard.innings = innings;
             // Calculate the innings score
             req.body.scorecard.total = calculateInningsScore(req.body.scorecard);
+            // Calculate the innings wickets lost
+            req.body.scorecard.wicketsLost = calculateInningsWicketsLost(req.body.scorecard);
 
             // Work out batting and bowling teams based on toss
             var tossWinnerId = fixture.tossWinner;
@@ -116,6 +118,14 @@ function calculateInningsScore(scorecard){
     score += parseInt(scorecard.extras.legByes) || 0;
     score += parseInt(scorecard.extras.pens) || 0;
     return score;
+}
+
+function calculateInningsWicketsLost(scorecard){
+    var wicketsLost = 0;
+    for(var i = 0; i < scorecard.innings.length; i ++){
+        wicketsLost += (scorecard.innings[i].howOut != "not out") ? 1 : 0;
+    }
+    return wicketsLost;
 }
 
 // Show the fixture
