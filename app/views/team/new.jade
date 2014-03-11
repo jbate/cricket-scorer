@@ -1,0 +1,11 @@
+extends ../layout
+
+block content
+  h1= title
+  div.create-team
+      form(name="teamEntry", action="/team/new", method="post")
+        input(type="text", placeholder="Name", name="name")
+        input(type="text", placeholder="Short name", name="shortName")
+        input(type="text", placeholder="Ground", name="ground")
+        br  
+        input(type="submit", value="Create")
