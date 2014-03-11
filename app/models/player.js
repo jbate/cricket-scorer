@@ -34,7 +34,7 @@ playerSchema.statics = {
    */
 
   loadById: function (id, cb) {
-    this.findOne({ _id : id })
+    this.findOne({ _id : id }).populate("team")
       .exec(cb)
   },
 
@@ -47,7 +47,7 @@ playerSchema.statics = {
    */
 
   loadByLastName: function (lastName, cb) {
-    this.findOne({ 'name.last' : lastName })
+    this.findOne({ 'name.last' : lastName }).populate("team")
       .exec(cb)
   },
 
