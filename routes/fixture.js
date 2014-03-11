@@ -12,6 +12,8 @@ module.exports = function (app) {
     app.post('/fixture/:fixtureId', fixture.edit);
 
     app.get('/fixture/:fixtureId', fixture.show);
+
+    app.get('/fixtures', fixture.showAll);
     
     app.param('fixtureId', fixture.load);
 }

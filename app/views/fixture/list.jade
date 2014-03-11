@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+  h1= title
+
+  if fixtures
+    table
+        tr
+            th= "Date"
+            th= "Home team"
+            th= "Away team"
+            th= "View"
+            th= "Edit"
+        each fixture, i in fixtures
+            tr
+                td= moment(fixture.createdDate).format("dddd, MMMM Do YYYY, H:mm:ss")
+                td= fixture.homeTeam.shortName
+                td= fixture.awayTeam.shortName
+                td
+                    a(href="/fixture/" + fixture._id) View
+                td
+                    a(href="/fixture/" + fixture._id + "/edit") Edit

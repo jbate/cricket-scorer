@@ -52,6 +52,25 @@ fixtureSchema.statics = {
                    }  
              );    
         });
+  },
+
+  /**
+   * List fixtures
+   *
+   * @param {Object} options
+   * @param {Function} cb
+   * @api private
+   */
+
+  list: function (options, cb) {
+    var criteria = options.criteria || {};
+
+    this.find(criteria)
+      .populate(population)
+      .sort('createdDate') // sort by created date
+      .limit(options.perPage)
+      .skip(options.perPage * options.page)
+      .exec(cb)
   }
 }
 //compile schema to model

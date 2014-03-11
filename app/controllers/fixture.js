@@ -126,3 +126,13 @@ exports.show = function(req, res){
               fixture: req.fixture  
           });
 };
+
+// Show all of the fixtures
+exports.showAll = function(req, res){
+    Fixture.list({ perPage: 10, page: 0 }, function(err, result){
+        res.render('fixture/list', { 
+              title: "All fixtures",
+              fixtures: result  
+          });
+    });  
+};
