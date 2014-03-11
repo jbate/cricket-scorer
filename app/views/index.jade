@@ -2,4 +2,25 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p= "Please select an action from the list below:"
+
+  h3= "Player Management"
+  ul
+    li
+        a(href="/players")= "List all"
+    li
+        a(href="/player/new")= "Create new" 
+
+  h3= "Team Management"
+  ul
+    li
+        a(href="/teams")= "List all"
+    li
+        a(href="/team/new")= "Create new"
+
+  h3= "Fixture Management"
+  ul
+    li
+        a(href="/fixtures")= "List all"
+    li
+        a(href="/fixture/new")= "Create new"
