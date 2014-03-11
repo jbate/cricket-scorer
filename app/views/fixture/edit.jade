@@ -4,10 +4,10 @@ block content
   h1= title
   div.edit-box
       form(name="fixture-edit", action="/fixture/#{fixture._id}", method="post")
-          label(for="fixture.matchType")="Match type: "
-          select(name="fixture.matchType")
-                option(selected=fixture.matchType == 'firstClass', value='firstClass')= "First class"
-                option(selected=fixture.matchType == 'oneDay', value='oneDay')= "One day"
+          label(for="fixture[matchType]")="Match type: "
+          select(name="fixture[matchType]")
+                option(selected=fixture.matchType == 'First class', value='First class')= "First class"
+                option(selected=fixture.matchType == 'One day', value='One day')= "One day"
                 option(selected=fixture.matchType == 't20', value='t20')= "t20"
           br
 
