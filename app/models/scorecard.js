@@ -48,19 +48,19 @@ scorecardSchema.virtual('extrasTotal').get(function () {
 
 scorecardSchema.virtual('extrasString').get(function () {
     var stringArr = [];
-    if(!isNaN(parseInt(this.extras.wides))){
+    if(!isNaN(parseInt(this.extras.wides)) && parseInt(this.extras.wides) > 0){
       stringArr.push("w " + parseInt(this.extras.wides))
     }
-    if(!isNaN(parseInt(this.extras.noBalls))){
+    if(!isNaN(parseInt(this.extras.noBalls)) && parseInt(this.extras.noBalls) > 0){
       stringArr.push("nb " + parseInt(this.extras.noBalls))
     }
-    if(!isNaN(parseInt(this.extras.byes))){
+    if(!isNaN(parseInt(this.extras.byes)) && parseInt(this.extras.byes) > 0){
       stringArr.push("b " + parseInt(this.extras.byes))
     }
-    if(!isNaN(parseInt(this.extras.legByes))){
+    if(!isNaN(parseInt(this.extras.legByes)) && parseInt(this.extras.legByes) > 0){
       stringArr.push("lb " + parseInt(this.extras.legByes))
     }
-    if(!isNaN(parseInt(this.extras.pens))){
+    if(!isNaN(parseInt(this.extras.pens)) && parseInt(this.extras.pens) > 0){
       stringArr.push("pens " + parseInt(this.extras.pens))
     }
     if(stringArr.length > 0){
