@@ -2,6 +2,10 @@ extends ../layout
 
 block content
   h1= title
+  a(href="/")= "<< Home"
+  br
+  br
+    
   div.create-player
       form(name="playerEntry", action="/player/new", method="post")
         input(type="text", placeholder="First name", name="name.first")

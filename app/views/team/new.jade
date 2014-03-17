@@ -2,6 +2,10 @@ extends ../layout
 
 block content
   h1= title
+  a(href="/")= "<< Home"
+  br
+  br
+    
   div.create-team
       form(name="teamEntry", action="/team/new", method="post")
         input(type="text", placeholder="Name", name="name")
