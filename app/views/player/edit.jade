@@ -1,0 +1,34 @@
+extends ../layout
+
+block content
+  h1= title
+  div.edit-player
+      form(name="playerEntry", action="/player/#{player._id}", method="post")
+        label(for="name.first")="First name"
+        input(type="text", placeholder="First name", name="name.first", value=player.name.first)
+        br
+        label(for="name.last")="Last name"  
+        input(type="text", placeholder="Last name", name="name.last", value=player.name.last)
+        br
+        label(for="name.initials")="Initials"
+        input(type="text", placeholder="Initials", name="name.initials", value=player.name.initials)
+        br
+        label(for="team")="Team"
+        select(name="team")
+            each team, i in teams
+                option(selected=player.team._id.toString() == team._id, value=team._id)= team.shortName
+        br  
+        label(for="bowlStyle")="Bowling style"
+        input(type="text", placeholder="Bowling style", name="bowlStyle", value=player.bowlStyle)
+        br
+        label(for="bowl")="Bowling hand"
+        select(name="bowl")
+          option(selected=player.bowl == "left", value='left')= "Left"
+          option(selected=player.bowl == "right", value='right')= "Right"
+        br
+        label(for="bat")="Batting hand"
+        select(name="bat")
+          option(selected=player.bat == "left", value='left')= "Left"
+          option(selected=player.bat == "right", value='right')= "Right"
+        br
+        input(type="submit", value="Update")

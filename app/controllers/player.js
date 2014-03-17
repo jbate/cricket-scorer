@@ -34,6 +34,25 @@ exports.showAll = function(req, res){
 };
 
 
+// Show the edit form
+exports.editForm = function(req, res){
+    if(req.player){
+        Team.list({ perPage: 10, page: 0 }, function(err, teams){
+            return res.render('player/edit', { title: 'Edit player', player: req.player, teams: teams });
+        });
+    }
+};
+
+// Edit the player
+exports.edit = function(req, res){
+    if(req.player){
+        // Update the player details
+        Player.findByIdAndUpdate(req.player._id, req.body, function(err, result){
+            return res.redirect('/player/' + req.player._id);
+        });
+    }
+};
+
 /**
  * Create player
  */
