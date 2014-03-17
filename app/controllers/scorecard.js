@@ -59,15 +59,15 @@ exports.editForm = function(req, res){
 exports.edit = function(req, res){
     if(req.scorecard){
         // Only save rows of an innings that have a player
-        var innings = [];
-        for(var i = 0; i < req.body.innings.length; i++){
+        var batting = [];
+        for(var i = 0; i < req.body.batting.length; i++){
             // If player isn't empty, push to temp array
-            if(req.body.innings[i].player != ""){
-                innings.push(req.body.innings[i]);
+            if(req.body.batting[i].player != ""){
+                batting.push(req.body.batting[i]);
             }
         }
         // Overwrite innings with temp array
-        req.body.innings = innings;
+        req.body.batting = batting;
         console.log(req.body);
         //Scorecard.findByIdAndUpdate(req.scorecard._id, req.body, function(err, result){
             return res.redirect('/scorecard/' + req.scorecard._id + "/edit");

@@ -5,7 +5,7 @@ var scorecardSchema = new mongoose.Schema({
   battingTeam: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' },
   bowlingTeam: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' },
   order: { type: Number, default: 0 },
-  innings: [{
+  batting: [{
     order: Number,
     score: { type: Number, default: 0 }, 
     howOut: { type: String, default: "not out" }, 
@@ -13,6 +13,16 @@ var scorecardSchema = new mongoose.Schema({
     mins: { type: Number, default: 0 }, 
     fours: { type: Number, default: 0 }, 
     sixes: { type: Number, default: 0 },
+    player: { type : mongoose.Schema.ObjectId, ref: 'Player', required: true }
+  }],
+  bowling: [{
+    order: Number,
+    overs: { type: Number, default: 0 }, 
+    maidens: { type: String, default: 0 }, 
+    wickets: { type: Number, default: 0 },
+    runs: { type: Number, default: 0 }, 
+    wides: { type: Number, default: 0 }, 
+    noBalls: { type: Number, default: 0 },
     player: { type : mongoose.Schema.ObjectId, ref: 'Player', required: true }
   }],
   extras: {
@@ -29,8 +39,8 @@ var scorecardSchema = new mongoose.Schema({
   modifiedDate: Date
 });
 
-scorecardSchema.virtual('innings.strikeRate').get(function () {
-    return Math.round(this.innings.score / this.innings.balls * 100).toFixed(2);
+scorecardSchema.virtual('batting.strikeRate').get(function () {
+    return Math.round(this.batting.score / this.batting.balls * 100).toFixed(2);
 });
 
 scorecardSchema.virtual('runRate').get(function () {
@@ -77,8 +87,6 @@ var validatePresenceOf = function(value) {
     return value && value.length;
 };
 
-//scorecardSchema.path("innings").validate(validatePresenceOf, "Name cannot be blank");
-
 scorecardSchema.pre('save', function (next) {
   this.modifiedDate = new Date;
   next();
@@ -87,7 +95,7 @@ scorecardSchema.pre('save', function (next) {
 /**
  * Statics
  */
-var population = 'battingTeam bowlingTeam innings.player';
+var population = 'battingTeam bowlingTeam batting.player bowling.player';
 
 scorecardSchema.statics = {
   
@@ -100,7 +108,7 @@ scorecardSchema.statics = {
    */
 
   loadById: function (id, cb) {
-    this.findOne({ _id : id }).populate(population).sort('innings.order')
+    this.findOne({ _id : id }).populate(population).sort('batting.order')
       .exec(cb)
   }
 }

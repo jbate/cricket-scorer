@@ -46,7 +46,7 @@ fixtureSchema.statics = {
     this.findOne({ _id : id })
     .populate(population)
          .exec(function(err, fixture){
-             mongoose.model("Scorecard").populate(fixture.scorecards, 'battingTeam bowlingTeam innings.player',
+             mongoose.model("Scorecard").populate(fixture.scorecards, 'battingTeam bowlingTeam batting.player bowling.player',
                    function(err, data){
                         cb(null, fixture);
                    }  

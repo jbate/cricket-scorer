@@ -54,16 +54,22 @@ exports.create = function(req, res){
 
 // Show the edit form
 exports.editForm = function(req, res){
-    if(req.fixture){
-        //console.log(req.fixture);
+    if(req.fixture){    
         Team.list({ perPage: 10, page: 0 }, function(err, teams){
-            var playerQuery = {
+            Player.list({
                 perPage: 10,
                 page: 0,
                 criteria: { team: req.fixture.scorecards[0].battingTeam._id }
-            }
-            Player.list(playerQuery, function(err, players){
-                return res.render('fixture/edit', { title: 'Edit fixture', fixture: req.fixture, teams: teams, players: players });
+            }, 
+            function(err, batters){
+                Player.list({
+                    perPage: 10,
+                    page: 0,
+                    criteria: { team: req.fixture.scorecards[0].bowlingTeam._id }
+                }, 
+                function(err, bowlers){
+                        return res.render('fixture/edit', { title: 'Edit fixture', fixture: req.fixture, teams: teams, availableBatters: batters, availableBowlers: bowlers });
+                });
             });
         });
     }
@@ -76,16 +82,27 @@ exports.edit = function(req, res){
         Fixture.findByIdAndUpdate(req.fixture._id, req.body.fixture, function(err, fixture){
             
             // Only save rows of an innings that have a player
-            var innings = [];
-            for(var i = 0; i < req.body.scorecard.innings.length; i++){
+            var batting = [];
+            for(var i = 0; i < req.body.scorecard.batting.length; i++){
                 // If player isn't empty, push to temp array
-                if(req.body.scorecard.innings[i].player != ""){
-                    innings.push(req.body.scorecard.innings[i]);
+                if(req.body.scorecard.batting[i].player != ""){
+                    batting.push(req.body.scorecard.batting[i]);
                 }
             }
-            console.log(innings);
             // Overwrite innings with temp array
-            req.body.scorecard.innings = innings;
+            req.body.scorecard.batting = batting;
+
+            // Only save rows of an innings that have a player
+            var bowling = [];
+            for(var i = 0; i < req.body.scorecard.bowling.length; i++){
+                // If player isn't empty, push to temp array
+                if(req.body.scorecard.bowling[i].player != ""){
+                    bowling.push(req.body.scorecard.bowling[i]);
+                }
+            }
+            // Overwrite innings with temp array
+            req.body.scorecard.bowling = bowling;
+
             // Calculate the innings score
             req.body.scorecard.total = calculateInningsScore(req.body.scorecard);
             // Calculate the innings wickets lost
@@ -100,7 +117,7 @@ exports.edit = function(req, res){
             req.body.scorecard.bowlingTeam = bowlingTeamId;
 
             // Finally update the scorecard details
-            Scorecard.findByIdAndUpdate(req.fixture.scorecards[0]._id, req.body.scorecard, function(err, resultt){
+            Scorecard.findByIdAndUpdate(req.fixture.scorecards[0]._id, req.body.scorecard, function(err, result){
                 return res.redirect('/fixture/' + req.fixture._id + "/edit");
             });
         });
@@ -109,8 +126,8 @@ exports.edit = function(req, res){
 
 function calculateInningsScore(scorecard){
     var score = 0;
-    for(var i = 0; i < scorecard.innings.length; i ++){
-        score += parseInt(scorecard.innings[i].score) || 0;
+    for(var i = 0; i < scorecard.batting.length; i ++){
+        score += parseInt(scorecard.batting[i].score) || 0;
     }
     score += parseInt(scorecard.extras.wides) || 0;
     score += parseInt(scorecard.extras.noBalls) || 0;
@@ -122,8 +139,8 @@ function calculateInningsScore(scorecard){
 
 function calculateInningsWicketsLost(scorecard){
     var wicketsLost = 0;
-    for(var i = 0; i < scorecard.innings.length; i ++){
-        wicketsLost += (scorecard.innings[i].howOut != "not out") ? 1 : 0;
+    for(var i = 0; i < scorecard.batting.length; i ++){
+        wicketsLost += (scorecard.batting[i].howOut != "not out") ? 1 : 0;
     }
     return wicketsLost;
 }

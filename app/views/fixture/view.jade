@@ -27,8 +27,8 @@ block content
                         th="6s"
                         th="S/R"
                 tbody
-                    if scorecard.innings.length > 0
-                        each batter, i in scorecard.innings
+                    if scorecard.batting.length > 0
+                        each batter, i in scorecard.batting
                             tr
                                 td
                                     if batter.player.name
@@ -60,4 +60,32 @@ block content
                         td.bold="Total"
                         td="(" + scorecard.wicketsLost + " wicket; " + scorecard.overs + " overs)"
                         td.bold= scorecard.total
-                        td(colspan="5")="(" + scorecard.runRate + " runs per over)"     
+                        td(colspan="5")="(" + scorecard.runRate + " runs per over)"   
+          br
+          table.bowling-table(width="70%")
+                thead
+                    tr
+                        th="Bowling"
+                        th="O"
+                        th="M"
+                        th="W"
+                        th="R"
+                        th="Econ."
+                        th="wd"
+                        th="nb"
+                tbody
+                    if scorecard.bowling.length > 0
+                        each bowler, i in scorecard.bowling
+                            tr
+                                td
+                                    if bowler.player.name
+                                        a(href="/player/" + bowler.player._id)=bowler.player.name.initials + " " + bowler.player.name.last
+                                td= bowler.overs
+                                td= bowler.maidens
+                                td= bowler.wickets
+                                td= bowler.runs
+                                td
+                                    if bowler.overs && bowler.runs
+                                        = (bowler.runs / bowler.overs).toFixed(2)  
+                                td= bowler.wides
+                                td= bowler.noBalls
