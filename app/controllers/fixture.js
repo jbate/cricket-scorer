@@ -75,6 +75,15 @@ exports.editForm = function(req, res){
     }
 };
 
+// Deletes a fixture
+exports.delete = function(req, res){
+    if(req.fixture){  
+        Fixture.findOne({ _id: req.fixture._id }).remove().exec(function(){
+            res.redirect("/fixtures");
+        });
+    }
+}
+
 // Edit the fixture
 exports.edit = function(req, res){
     if(req.fixture){

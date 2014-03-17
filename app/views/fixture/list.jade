@@ -11,6 +11,7 @@ block content
             th= "Away team"
             th= "View"
             th= "Edit"
+            th= "Delete"
         each fixture, i in fixtures
             tr
                 td= moment(fixture.createdDate).format("dddd, MMMM Do YYYY, H:mm:ss")
@@ -20,3 +21,5 @@ block content
                     a(href="/fixture/" + fixture._id) View
                 td
                     a(href="/fixture/" + fixture._id + "/edit") Edit
+                td
+                    a(href="/fixture/" + fixture._id + "/delete") Delete

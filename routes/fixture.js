@@ -9,6 +9,7 @@ module.exports = function (app) {
     app.post('/fixture/new', fixture.create);
 
     app.get('/fixture/:fixtureId/edit', fixture.editForm);
+    app.get('/fixture/:fixtureId/delete', fixture.delete);
     app.post('/fixture/:fixtureId', fixture.edit);
 
     app.get('/fixture/:fixtureId', fixture.show);
